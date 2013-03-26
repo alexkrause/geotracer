@@ -298,3 +298,38 @@ textarea {
         page-break-after: avoid;
     }
 }
+
+/* ==========================================================================
+   custom styles added by alex
+   ========================================================================== */
+body {
+	padding: 5px;
+}
+
+input[type=button] {
+	background-color: #CCCCCC;
+	border-radius: 5px;
+	box-shadow: none;
+}
+ 
+ input[type=button]:hover {
+ 	background-color: #EEEEEE;
+ }
+ 
+ input[type=button]:active {
+ 	background-color: #FFFFFF;
+ }
+ 
+ .datatable {
+ 	width: 100%;
+ 	border-color: #AAAAAA;
+ 	margin-top: 5px;
+ }
+ 
+ .datatable th {
+ 	background-color: #CCCCCC;
+ }
+ 
+ .datatable td {
+ 	background-color: #EEEEEE;
+ }
