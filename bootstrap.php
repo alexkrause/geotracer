@@ -4,6 +4,10 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
 require_once "vendor/autoload.php";
+require_once 'entities/Geolocation.php';
+require_once 'entities/Trip.php';
+
+$entityManager;
 
 // Create a simple "default" Doctrine ORM configuration for Annotations
 $isDevMode = true;

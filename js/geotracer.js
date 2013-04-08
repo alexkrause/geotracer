@@ -27,7 +27,7 @@ function storeCurrentPosition(position) {
 
 		var speed = 0;
 		if (firstPosition) {
-			var elapsedTime = calculateElapsedTime(firstPosition, trackingPoint);
+			var elapsedTime = calculateElapsedTime(trackingPoint, firstPosition);
 			var speed = calculateTotalSpeed(totalDistance, elapsedTime);
 		}
 		$('#totaldistance').html('total distance: '+totalDistance+' km');
@@ -98,6 +98,11 @@ function TrackingPoint(time, lati, longi, status) {
 	this.latitude = lati;
 	this.longitude = longi;
 	this.statusCode = status;
+}
+
+function Trip(tripName, trackingPointList) {
+	this.trackingPoints = trackingPointList;
+	this.name = tripName;
 }
 
 function getCurrentStorageSequence() {
@@ -199,4 +204,23 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
 
 function deg2rad(deg) {
 	return deg * (Math.PI/180);
+}
+
+function storeTrip(name) {
+	var trackingPointList = [];
+	var lastIndex = getCurrentStorageSequence();
+	
+	for (var i = 1; i <= lastIndex; ++i) {
+		currentPosition = getPositionFromLocalStorage(i);
+		trackingPointList.push(currentPosition);
+	}
+	
+	var trip = new Trip(name, trackingPointList);
+	
+	console.info(JSON.stringify(trip));
+}
+
+function saveTrip() {
+	var name = prompt("please enter the name of the trip");
+	storeTrip(name);
 }

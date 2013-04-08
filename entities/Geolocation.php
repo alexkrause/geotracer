@@ -8,28 +8,54 @@ class Geolocation
 	/** @Id @Column(type="integer") @GeneratedValue **/
 	protected $id;
 	
+	/** @Column(type="integer") **/
+	protected $timestamp;
+	
 	/** @Column(type="float") **/
-    protected $lat;
+    protected $latitude;
 
     /** @Column(type="float") **/
-    protected $long;
+    protected $longitude;
 
-    public function getLat()
+    /** @ManyToOne(targetEntity="Trip", inversedBy="geolocationList") **/
+    protected $trip;
+    
+    public function getLatitude()
     {
-        return $this->lat;
+        return $this->latitude;
     }
-    public function setLat($lat)
+    public function setLatitude($latitude)
     {
-    	$this->lat = $lat;
-    }
-
-    public function getLong()
-    {
-        return $this->long;
+    	$this->latitude = $latitude;
     }
 
-    public function setLong($long)
+    public function getLongitude()
     {
-        $this->long = $long;
+        return $this->longitude;
+    }
+
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+    }
+    
+    public function getTimestamp()
+    {
+    	return $this->timestamp;
+    }
+    
+    public function setTimestamp($timestamp)
+    {
+    	$this->timestamp = $timestamp;
+    }
+    
+    public function getTrip()
+    {
+    	return $this->trip;
+    }
+    
+    public function setTrip($trip)
+    {
+    	$this->trip = $trip;
     }
 }
