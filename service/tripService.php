@@ -19,18 +19,18 @@ function saveTrip($name, $geolocationList, $entityManager) {
 	
 }
 
-function saveJsonTrip($tripdataJson, $entityManager) {
+function saveJsonTrip($decodedTripData, $entityManager) {
 	
 	$geolocationList = array();
-	$tripData = json_decode($tripdataJson);
 	
-	if (!is_array($tripData->trackingPoints)
-	 || is_null($tripData->name) || $tripData->name == "") {
+	
+	if (!is_array($decodedTripData->trackingPoints)
+	 || is_null($decodedTripData->name) || $decodedTripData->name == "") {
 		//TODO write logging code
 		return;
 	}	
 	
-	foreach ($tripData->trackingPoints as $trackingPoint) {
+	foreach ($decodedTripData->trackingPoints as $trackingPoint) {
 		$geolocation = new Geolocation();
 		$geolocation->setLatitude($trackingPoint->latitude);
 		$geolocation->setLongitude($trackingPoint->longitude);
@@ -38,6 +38,6 @@ function saveJsonTrip($tripdataJson, $entityManager) {
 		array_push($geolocationList, $geolocation);
 	}
 	
-	saveTrip($tripData->name, $geolocationList, $entityManager);
+	saveTrip($decodedTripData->name, $geolocationList, $entityManager);
 }
 
