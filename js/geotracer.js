@@ -215,7 +215,19 @@ function storeTrip(name) {
     
     var trip = new Trip(name, trackingPointList);
     
-    console.info(JSON.stringify(trip));
+    $.ajax({
+	  type: "POST",
+	  url: "app/saveTrip.php",
+	  data: "tripDataJson: "+JSON.stringify(trip),
+	  success: saveTripSuccess,
+	  dataType: "json"
+	});
+    
+    console.info();
+}
+
+function saveTripSuccess(data, textStatus, jqXHR) {
+	alert(data);
 }
 
 function saveTrip() {

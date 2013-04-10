@@ -4,6 +4,8 @@ require_once '../service/tripService.php';
 
 $tripdataJson = $_POST['tripDataJson'];
 
+// TODO: create JSON output from a proper php object
+
 if ($tripdataJson != null && !$tripdataJson == "") {
 	$decodedTripData = json_decode($tripdataJson);
 	$jsonError = json_last_error();
@@ -13,9 +15,9 @@ if ($tripdataJson != null && !$tripdataJson == "") {
 		echo "{\"status\":\"OK\",\"errorcode\":".JSON_ERROR_NONE."\"}";
 	}
 	else {
-		echo "{\"status\":\"ERROR\Ó,\"errorcode\":".$jsonError."\"}";
+		echo "{\"status\":\"ERROR\",\"errorcode\":".$jsonError."\"}";
 	}
 }
 else {
-	echo "{\"status\":\"ERROR\Ó,\"errorcode\":\"99\"}";
+	echo "{\"status\":\"ERROR\",\"errorcode\":\"99\"}";
 }
