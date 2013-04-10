@@ -8,7 +8,7 @@ class Geolocation
 	/** @Id @Column(type="integer") @GeneratedValue **/
 	protected $id;
 	
-	/** @Column(type="integer") **/
+	/** @Column(type="bigint") **/
 	protected $timestamp;
 	
 	/** @Column(type="float") **/

@@ -204,7 +204,7 @@ function resetAll() {
 }
 
 
-function storeTrip(name) {
+function storeTripOnServer(name) {
     var trackingPointList = [];
     var lastIndex = getCurrentStorageSequence();
     
@@ -214,11 +214,14 @@ function storeTrip(name) {
     }
     
     var trip = new Trip(name, trackingPointList);
+    var postData = {
+            tripDataJson: JSON.stringify(trip)
+    }
     
     $.ajax({
 	  type: "POST",
 	  url: "app/saveTrip.php",
-	  data: "tripDataJson: "+JSON.stringify(trip),
+	  data: postData,
 	  success: saveTripSuccess,
 	  dataType: "json"
 	});
@@ -232,7 +235,7 @@ function saveTripSuccess(data, textStatus, jqXHR) {
 
 function saveTrip() {
     var name = prompt("please enter the name of the trip");
-    storeTrip(name);
+    storeTripOnServer(name);
 }
 
 function determineCurrentPosition() {

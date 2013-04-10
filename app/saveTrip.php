@@ -2,12 +2,12 @@
 require_once '../bootstrap.php';
 require_once '../service/tripService.php';
 
-$tripdataJson = $_POST['tripDataJson'];
+$tripDataJson = $_POST['tripDataJson'];
 
 // TODO: create JSON output from a proper php object
 
-if ($tripdataJson != null && !$tripdataJson == "") {
-	$decodedTripData = json_decode($tripdataJson);
+if ($tripDataJson != null && !$tripDataJson == "") {
+	$decodedTripData = json_decode($tripDataJson);
 	$jsonError = json_last_error();
 	
 	if ($jsonError == JSON_ERROR_NONE) {
