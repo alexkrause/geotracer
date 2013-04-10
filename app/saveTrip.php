@@ -1,10 +1,12 @@
 <?php
+use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
 require_once '../bootstrap.php';
 require_once '../service/tripService.php';
 
 $tripDataJson = $_POST['tripDataJson'];
 
 // TODO: create JSON output from a proper php object
+$responseData = new ResponseData();
 
 if ($tripDataJson != null && !$tripDataJson == "") {
 	$decodedTripData = json_decode($tripDataJson);
@@ -12,12 +14,20 @@ if ($tripDataJson != null && !$tripDataJson == "") {
 	
 	if ($jsonError == JSON_ERROR_NONE) {
 		saveJsonTrip($decodedTripData, $entityManager);
-		echo "{\"status\":\"OK\",\"errorcode\":".JSON_ERROR_NONE."\"}";
+		$responseData->status="OK";
+		$responseData->errorcode = JSON_ERROR_NONE;
 	}
 	else {
-		echo "{\"status\":\"ERROR\",\"errorcode\":".$jsonError."\"}";
+		$responseData->status="ERROR";
+		$responseData->errorcode = $jsonError;
 	}
 }
-else {
-	echo "{\"status\":\"ERROR\",\"errorcode\":\"99\"}";
+
+echo json_encode($responseData);
+
+
+
+class ResponseData {
+	public $status = "ERROR";
+	public $errorcode = "99";
 }

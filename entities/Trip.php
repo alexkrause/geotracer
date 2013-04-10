@@ -14,7 +14,7 @@ class Trip {
 	/** @Column(type="string") **/
 	protected $name;
 	
-	public function getGeolocatiionList() {
+	public function getGeolocationList() {
 		return $this->geolocationList;
 	}
 	
@@ -28,6 +28,10 @@ class Trip {
 	
 	public function setName($name) {
 		$this->name = $name;
+	}
+	
+	public function getId() {
+		return $this->id;
 	}
 	
 }	

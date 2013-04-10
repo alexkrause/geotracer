@@ -193,6 +193,7 @@ function stopTracing() {
 }
 
 function startTracing() {
+    showTripData();
     navigator.geolocation.getCurrentPosition(storeCurrentPosition,errorRetrievingCurrentPosition);
 }
 
@@ -200,6 +201,7 @@ function resetAll() {
     localStorage.clear();
     $('#collectedData').find("tr:gt(0)").remove();
     $('#totaldistance').html('total distance: 0 km');
+    $('#map-canvas').html('');
     $('#speed').html('Speed: 0 km/h');
 }
 
@@ -237,6 +239,34 @@ function saveTrip() {
     var name = prompt("please enter the name of the trip");
     storeTripOnServer(name);
 }
+
+function loadTripList() {
+    $.ajax({
+        type: "GET",
+        url: "app/loadTrips.php",
+        success: loadTripsSuccess,
+        dataType: "json"
+          });
+}
+
+function loadTripsSuccess(data, textStatus, jqXHR) {
+    showTripList();
+    $('#tripList').html('');
+    
+    for (var i = 0; i <= data.length; ++i) {
+        $('#tripList').append('<li>'+data[i].name);
+    }
+}
+
+function showTripData(){
+    $('#tripDataSection').show();
+    $('#tripListSection').hide();
+} 
+
+function showTripList(){
+    $('#tripDataSection').hide();
+    $('#tripListSection').show();
+} 
 
 function determineCurrentPosition() {
     navigator.geolocation.getCurrentPosition(storeCurrentPosition,errorRetrievingCurrentPosition);

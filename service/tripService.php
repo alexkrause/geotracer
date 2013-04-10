@@ -41,3 +41,14 @@ function saveJsonTrip($decodedTripData, $entityManager) {
 	saveTrip($decodedTripData->name, $geolocationList, $entityManager);
 }
 
+
+function findAllTrips($entityManager) {
+	$tripRepository = $entityManager->getRepository('Trip');
+	return $tripRepository->findBy(array(), array("name"=>"asc"));
+}
+
+function findGeolocationsForTrip($tripId, $entityManager) {
+	
+	return $entityManager->getRepository('Geolocation')->findBy(array('trip' => $tripId));
+	
+}
