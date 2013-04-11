@@ -45,6 +45,7 @@ function calculateDistance(point1, point2) {
     return getDistanceFromLatLonInKm(point1.latitude, point1.longitude, point2.latitude, point2.longitude);
 }
 
+
 function calculateTotalDistance() {
     var lastIndex = getCurrentStorageSequence();
     var totaldistance = 0;
@@ -62,14 +63,15 @@ function calculateTotalDistance() {
     return totaldistance;
 }
 
-function calculateElapsedTime(point1, point2) {
-    if (point1 && point2) {
-        return point1.timestamp - point2.timestamp;
+function calculateElapsedTime(trackingPoint1, trackingPoint2) {
+    if (trackingPoint1 && trackingPoint2) {
+        return trackingPoint2.timestamp - trackingPoint1.timestamp;
     }
     return 0;
 }
 
-function calculateTotalSpeed(distance, elapsedTimeMillies) {
+
+function calculateSpeed(distance, elapsedTimeMillies) {
     if (distance == null || elapsedTimeMillies == null
             || isNaN(distance) || isNaN(elapsedTimeMillies) )
         return 0;
@@ -93,32 +95,46 @@ function getPositionFromLocalStorage(id) {
     return null;
 }
 
-function storeCurrentPosition(position) {
+function storeAndShowCurrentPosition(position) {
     var previousPosition = getPositionFromLocalStorage(getCurrentStorageSequence());
     var trackingPoint = new TrackingPoint(new Date().getTime(), position.coords.latitude, position.coords.longitude, '');
 
     // only store position if the distance to the previous one is > 10m or there are no samples available yet        
     if (!previousPosition || calculateDistance(trackingPoint, previousPosition) > 0.01) {
-        $('#collectedData').append('<tr><td>' + trackingPoint.timestamp + '</td><td>' + trackingPoint.latitude + '</td><td>' + trackingPoint.longitude + '</td></tr>');
-        
-        var totalDistance = calculateTotalDistance();
-        var firstPosition = getPositionFromLocalStorage(1);
-
-        var speed = 0;
-        if (firstPosition) {
-            var elapsedTime = calculateElapsedTime(trackingPoint, firstPosition);
-            speed = calculateTotalSpeed(totalDistance, elapsedTime);
-        }
-        $('#totaldistance').html('total distance: ' + totalDistance + ' km');
-        $('#speed').html('Speed: ' + speed + ' km/h');
-
         var storageId = getNewSequenceId();
         storePosition(storageId, trackingPoint);
-        // console.info("sequence: "+storageId+" lat: "+trackingPoint.latitude+" long: "+trackingPoint.longitude);
+        appendTrackingPointToTable(trackingPoint)
+        calculateAndPaintSpeedAndDistance();
     }
-
+    
     // set new timer for next checkpoint
     locationTimer = window.setTimeout("determineCurrentPosition()", 5000);
+} 
+
+function showTrip(trackingPointList) {
+    resetDisplay();
+    
+    for (var i=0; i<trackingPointList.length; i++) {
+        appendTrackingPointToTable(trackingPointList[i]);
+    }
+    calculateAndPaintSpeedAndDistance();
+    drawGoogleMapCenteredToLastPosition();
+}
+
+
+function appendTrackingPointToTable(trackingPoint) {
+    $('#collectedData').append('<tr><td>' + trackingPoint.timestamp + '</td><td>' + trackingPoint.latitude + '</td><td>' + trackingPoint.longitude + '</td></tr>');
+}
+
+function calculateAndPaintSpeedAndDistance() {
+    var totalDistance = calculateTotalDistance();
+    
+    trackingPoint1 = getPositionFromLocalStorage(1);
+    trackingPoint2 = getLastPosition();
+    
+    var speed = calculateSpeed(totalDistance, calculateElapsedTime(trackingPoint1, trackingPoint2));
+    $('#totaldistance').html('total distance: ' + totalDistance.toFixed(2) + ' km');
+    $('#speed').html('Speed: ' + speed.toFixed(2) + ' km/h');
 }
 
 
@@ -128,7 +144,6 @@ function errorRetrievingCurrentPosition(error) {
 
     var trackingPoint = new TrackingPoint(new Date().getTime(), null, null, error);
     storePosition(storageId, trackingPoint);
-
 
     // set new timer for next checkpoint
     locationTimer = window.setTimeout("determineCurrentPosition()", 10000);
@@ -142,10 +157,6 @@ function Trip(tripName, trackingPointList) {
 function getLastPosition() {
     currentSequenceId = getCurrentStorageSequence();
     var lastPosition = getPositionFromLocalStorage(currentSequenceId);
-
-    if (lastPosition == null) {
-        return new TrackingPoint(null, 0,0, null);
-    }
     return lastPosition;
 }
 
@@ -157,6 +168,11 @@ function getNewSequenceId() {
     return increasedSequenceId;
 }
 
+
+function drawGoogleMapCenteredToLastPosition() {
+    lastPosition = getLastPosition();
+    drawGoogleMap(lastPosition.latitude, lastPosition.longitude);
+}
 
 
 function drawGoogleMap(latitude, longitude) {
@@ -193,12 +209,16 @@ function stopTracing() {
 }
 
 function startTracing() {
-    showTripData();
-    navigator.geolocation.getCurrentPosition(storeCurrentPosition,errorRetrievingCurrentPosition);
+    showTripDataSection();
+    navigator.geolocation.getCurrentPosition(storeAndShowCurrentPosition,errorRetrievingCurrentPosition);
 }
 
 function resetAll() {
     localStorage.clear();
+    resetDisplay();
+}
+
+function resetDisplay() {
     $('#collectedData').find("tr:gt(0)").remove();
     $('#totaldistance').html('total distance: 0 km');
     $('#map-canvas').html('');
@@ -228,7 +248,6 @@ function storeTripOnServer(name) {
 	  dataType: "json"
 	});
     
-    console.info();
 }
 
 function saveTripSuccess(data, textStatus, jqXHR) {
@@ -244,30 +263,53 @@ function loadTripList() {
     $.ajax({
         type: "GET",
         url: "app/loadTrips.php",
-        success: loadTripsSuccess,
+        success: loadTripListSuccess,
         dataType: "json"
           });
 }
 
-function loadTripsSuccess(data, textStatus, jqXHR) {
-    showTripList();
+function loadTripListSuccess(data, textStatus, jqXHR) {
+    showTripListSection();
     $('#tripList').html('');
     
-    for (var i = 0; i <= data.length; ++i) {
-        $('#tripList').append('<li>'+data[i].name);
+    for (var i = 0; i < data.length; ++i) {
+        $('#tripList').append('<li><span onClick="loadTripData(' + data[i].id + ')">'+data[i].name+'</span>');
     }
 }
 
-function showTripData(){
+function loadTripData(tripId) {
+    $.ajax({
+        type: "GET",
+        url: "app/loadTripData.php?tripId="+tripId,
+        success: loadTripDataSuccess,
+        dataType: "json"
+          });
+}
+
+function loadTripDataSuccess(data, textStatus, jqXHR) {
+    // TODO add some error handling
+    
+    localStorage.clear();
+    
+    for (var i = 0; i< data.trackingPoints.length; ++i) {
+        storePosition(getNewSequenceId(), data.trackingPoints[i]);
+    }
+    
+    showTripDataSection();
+    showTrip(data.trackingPoints);
+    
+}
+
+function showTripDataSection(){
     $('#tripDataSection').show();
     $('#tripListSection').hide();
 } 
 
-function showTripList(){
+function showTripListSection(){
     $('#tripDataSection').hide();
     $('#tripListSection').show();
 } 
 
 function determineCurrentPosition() {
-    navigator.geolocation.getCurrentPosition(storeCurrentPosition,errorRetrievingCurrentPosition);
+    navigator.geolocation.getCurrentPosition(storeAndShowCurrentPosition,errorRetrievingCurrentPosition);
 }
