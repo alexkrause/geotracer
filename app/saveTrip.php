@@ -1,9 +1,9 @@
 <?php
 use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
-require_once '../bootstrap.php';
-require_once '../service/tripService.php';
+require_once "../bootstrap.php";
+require_once "../service/tripService.php";
 
-$tripDataJson = $_POST['tripDataJson'];
+$tripDataJson = $_POST["tripDataJson"];
 
 // TODO: create JSON output from a proper php object
 $responseData = new ResponseData();

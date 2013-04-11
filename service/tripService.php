@@ -48,7 +48,9 @@ function findAllTrips($entityManager) {
 }
 
 function findGeolocationsForTrip($tripId, $entityManager) {
-	
 	return $entityManager->getRepository('Geolocation')->findBy(array('trip' => $tripId));
-	
 }
+
+function findTripById($tripId, $entityManager) {
+	return $entityManager->getRepository('Trip')->find($tripId);
+} 
