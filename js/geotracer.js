@@ -290,7 +290,7 @@ function loadTripListSuccess(data, textStatus, jqXHR) {
     $('#tripList').html('');
     
     for (var i = 0; i < data.length; ++i) {
-        $('#tripList').append('<li><span onClick="loadTripData(' + data[i].id + ')">'+data[i].name+'</span>');
+        $('#tripList').append('<li><span class="clickableItem" onClick="loadTripData(' + data[i].id + ')">'+data[i].name+'</span>');
     }
     
     showTripListSection();
@@ -320,13 +320,14 @@ function loadTripDataSuccess(data, textStatus, jqXHR) {
 }
 
 function showTripDataSection(){
-    $('#tripDataSection').show();
     $('#tripListSection').hide();
+    $('#tripDataSection').fadeIn('slow');
+    
 } 
 
 function showTripListSection(){
     $('#tripDataSection').hide();
-    $('#tripListSection').show();
+    $('#tripListSection').fadeIn('slow');
 } 
 
 function determineCurrentPosition() {

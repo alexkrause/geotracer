@@ -340,3 +340,7 @@ input[type=button] {
     width: 400px;
     height: 300px;
  }
+ 
+ .clickableItem {
+    cursor:pointer;
+ }
