@@ -333,3 +333,19 @@ input[type=button] {
  .datatable td {
  	background-color: #EEEEEE;
  }
+ 
+ .visibleBox {
+   opacity: 1;
+   visibility: visible;
+   transition: opacity 1s ease-in-out;
+   -moz-transition: opacity 1s ease-in-out;
+   -webkit-transition: opacity 1s ease-in-out;
+   }
+   
+ .invisibleBox {
+   opacity: 0;
+   visibility: hidden;
+   transition: opacity 1s ease-in-out;
+   -moz-transition: opacity 1s ease-in-out;
+   -webkit-transition: opacity 1s ease-in-out;
+   }

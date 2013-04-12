@@ -269,12 +269,14 @@ function loadTripList() {
 }
 
 function loadTripListSuccess(data, textStatus, jqXHR) {
-    showTripListSection();
+    
     $('#tripList').html('');
     
     for (var i = 0; i < data.length; ++i) {
         $('#tripList').append('<li><span onClick="loadTripData(' + data[i].id + ')">'+data[i].name+'</span>');
     }
+    
+    showTripListSection();
 }
 
 function loadTripData(tripId) {
@@ -301,13 +303,17 @@ function loadTripDataSuccess(data, textStatus, jqXHR) {
 }
 
 function showTripDataSection(){
-    $('#tripDataSection').show();
-    $('#tripListSection').hide();
+    $('#tripDataSection').removeClass('invisibleBox');
+    $('#tripDataSection').addClass('visibleBox');
+    $('#tripListSection').removeClass('visibleBox');
+    $('#tripListSection').addClass('invisibleBox');
 } 
 
 function showTripListSection(){
-    $('#tripDataSection').hide();
-    $('#tripListSection').show();
+	$('#tripDataSection').removeClass('visibleBox');
+    $('#tripDataSection').addClass('invisibleBox');
+    $('#tripListSection').removeClass('invisibleBox');
+    $('#tripListSection').addClass('visibleBox');
 } 
 
 function determineCurrentPosition() {
