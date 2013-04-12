@@ -121,6 +121,15 @@ function showTrip(trackingPointList) {
     drawGoogleMapCenteredToLastPosition();
 }
 
+function showCurrentTrip() {
+    var lastIndex = getCurrentStorageSequence();
+    var trackingPointList = [];
+    for (var i = 1; i <= lastIndex; ++i) {
+        trackingPointList.push(getPositionFromLocalStorage(i));
+    }
+    showTrip(trackingPointList);
+}
+
 
 function appendTrackingPointToTable(trackingPoint) {
     $('#collectedData').append('<tr><td>' + trackingPoint.timestamp + '</td><td>' + trackingPoint.latitude + '</td><td>' + trackingPoint.longitude + '</td></tr>');
@@ -171,7 +180,9 @@ function getNewSequenceId() {
 
 function drawGoogleMapCenteredToLastPosition() {
     lastPosition = getLastPosition();
-    drawGoogleMap(lastPosition.latitude, lastPosition.longitude);
+    if (lastPosition != null) {
+        drawGoogleMap(lastPosition.latitude, lastPosition.longitude);
+    }
 }
 
 
@@ -210,6 +221,7 @@ function stopTracing() {
 
 function startTracing() {
     showTripDataSection();
+    showCurrentTrip();
     navigator.geolocation.getCurrentPosition(storeAndShowCurrentPosition,errorRetrievingCurrentPosition);
 }
 
@@ -226,7 +238,9 @@ function resetDisplay() {
 }
 
 
-function storeTripOnServer(name) {
+
+function saveTrip() {
+    
     var trackingPointList = [];
     var lastIndex = getCurrentStorageSequence();
     
@@ -235,28 +249,31 @@ function storeTripOnServer(name) {
         trackingPointList.push(currentPosition);
     }
     
-    var trip = new Trip(name, trackingPointList);
-    var postData = {
-            tripDataJson: JSON.stringify(trip)
+    if (trackingPointList.length > 0) {
+        var name = prompt("please enter the name of the trip");
+        
+        if (name != null && name!='') {
+            var trip = new Trip(name, trackingPointList);
+            var postData = {
+                    tripDataJson: JSON.stringify(trip)
+            }
+            
+            $.ajax({
+              type: "POST",
+              url: "app/saveTrip.php",
+              data: postData,
+              success: saveTripSuccess,
+              dataType: "json"
+            });
+        }
     }
-    
-    $.ajax({
-	  type: "POST",
-	  url: "app/saveTrip.php",
-	  data: postData,
-	  success: saveTripSuccess,
-	  dataType: "json"
-	});
-    
+    else {
+        alert("nothing to save...");
+    }
 }
 
 function saveTripSuccess(data, textStatus, jqXHR) {
-	alert(data);
-}
-
-function saveTrip() {
-    var name = prompt("please enter the name of the trip");
-    storeTripOnServer(name);
+    alert(data);
 }
 
 function loadTripList() {
@@ -303,17 +320,13 @@ function loadTripDataSuccess(data, textStatus, jqXHR) {
 }
 
 function showTripDataSection(){
-    $('#tripDataSection').removeClass('invisibleBox');
-    $('#tripDataSection').addClass('visibleBox');
-    $('#tripListSection').removeClass('visibleBox');
-    $('#tripListSection').addClass('invisibleBox');
+    $('#tripDataSection').show();
+    $('#tripListSection').hide();
 } 
 
 function showTripListSection(){
-	$('#tripDataSection').removeClass('visibleBox');
-    $('#tripDataSection').addClass('invisibleBox');
-    $('#tripListSection').removeClass('invisibleBox');
-    $('#tripListSection').addClass('visibleBox');
+    $('#tripDataSection').hide();
+    $('#tripListSection').show();
 } 
 
 function determineCurrentPosition() {

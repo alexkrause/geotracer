@@ -334,18 +334,9 @@ input[type=button] {
  	background-color: #EEEEEE;
  }
  
- .visibleBox {
-   opacity: 1;
-   visibility: visible;
-   transition: opacity 1s ease-in-out;
-   -moz-transition: opacity 1s ease-in-out;
-   -webkit-transition: opacity 1s ease-in-out;
-   }
-   
- .invisibleBox {
-   opacity: 0;
-   visibility: hidden;
-   transition: opacity 1s ease-in-out;
-   -moz-transition: opacity 1s ease-in-out;
-   -webkit-transition: opacity 1s ease-in-out;
-   }
+ .map-canvas {
+    margin-top: 5px;    
+    border: 1px;
+    width: 400px;
+    height: 300px;
+ }
