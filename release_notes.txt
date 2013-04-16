@@ -1,0 +1,7 @@
+
+
+-- 26.04.2013
+-- execute SQL for creating simple view of geonames
+CREATE OR REPLACE VIEW geoname_light AS
+SELECT name, latitude, longitude
+FROM  `geoname` 
