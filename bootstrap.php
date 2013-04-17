@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 
 require_once "vendor/autoload.php";
 require_once 'entities/Geolocation.php';
+require_once 'entities/Geoname.php';
 require_once 'entities/Trip.php';
 
 $entityManager;

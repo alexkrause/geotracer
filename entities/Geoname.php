@@ -4,12 +4,11 @@
  **/
 class Geoname
 {
-    
-	/** @Column(type="name") **/
-	protected $name;
+	/** @Id @Column(type="integer") @GeneratedValue **/
+	protected $geonameid;
 	
-	/** @Column(type="float") **/
-	protected $longitude;
+	/** @Column(type="string") **/
+	protected $name;
 	
 	/** @Column(type="float") **/
     protected $latitude;
@@ -47,9 +46,5 @@ class Geoname
         $this->longitude = $longitude;
     }
     
-    public function getTimestamp()
-    {
-    	return $this->timestamp;
-    }
     
 }
