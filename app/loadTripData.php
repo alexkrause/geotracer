@@ -1,6 +1,7 @@
 <?php
 require_once '../bootstrap.php';
 require_once '../service/tripService.php';
+require_once 'responseClasses.php';
 
 $tripId = $_GET['tripId'];
 if (!empty($tripId)){
@@ -19,16 +20,3 @@ if (!empty($tripId)){
 }
 
 echo json_encode($trackingData);
-
-
-class TrackingData {
-	public $trackingPoints = array();
-	public $name;
-}
-
-class TrackingPoint {
-	public $latitude;
-	public $longitude;
-	public $timestamp;
-	public $statusCode;
-}

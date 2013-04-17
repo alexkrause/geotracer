@@ -237,7 +237,39 @@ function resetDisplay() {
     $('#speed').html('Speed: 0 km/h');
 }
 
+function loadPlacesInVicinity() {
+    
+    var currentPosition = getLastPosition();
+    
+    if (currentPosition !== null) {
+        
+            var postData = {
+                    currentPosition: JSON.stringify(currentPosition)
+            }
+            
+            $.ajax({
+              type: "POST",
+              url: "app/findLocationsInVicinity.php",
+              data: postData,
+              success: loadPlacesInVicinitySuccess,
+              dataType: "json"
+            });
+    }
+}
 
+function loadPlacesInVicinitySuccess(data, textStatus, jqXHR) {
+    $('#placesList').html('');
+    
+    var currentLocation = getLastPosition();
+    
+    for (var i = 0; i < data.length; ++i) {
+        var distance = null;
+        if (currentLocation !== null) {
+            distance = getDistanceFromLatLonInKm(currentLocation.latitude, currentLocation.longitude, data[i].latitude, data[i].longitude);
+        }
+        $('#placesList').append('<li>'+data[i].locationName+': '+distance.toFixed(2)+' km');
+    }
+}
 
 function saveTrip() {
     
@@ -273,7 +305,7 @@ function saveTrip() {
 }
 
 function saveTripSuccess(data, textStatus, jqXHR) {
-    alert(data);
+    alert('Status: '+data.errorcode+' '+data.status);
 }
 
 function loadTripList() {

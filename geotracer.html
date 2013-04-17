@@ -23,10 +23,16 @@
     	<input value="reset all" type="button" onClick="resetAll();"/>
     	<input value="save" type="button" onClick="saveTrip();"/>
     	<input value="load all trips" type="button" onClick="loadTripList();"/>
+    	<input value="places" type="button" onClick="loadPlacesInVicinity();"/>
+    	
 
     	<section id="tripDataSection">   
     	<div id="totaldistance" style="height:50px, width:100%;"></div> 
         <div id="speed" style="height:50px, width:100%;"></div>
+        <div id="places" style="height:50px, width:100%;">
+        <ul id="placesList">
+        </ul>
+        </div>
     	<table class="datatable" id="collectedData" border="1">
     		<tr>
     			<th>ts</th>

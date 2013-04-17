@@ -16,11 +16,6 @@ function findGeonamesInVicinity($latitude, $longitude, $distance, $entityManager
 	$q->setParameter(3, $lon1);
 	$q->setParameter(4, $lon2);
 	
-	return $q->getArrayResult();
+	return $q->getResult();
 	
-}
-
-function findAllGeonames($entityManager) {
-	$geonameRepository = $entityManager->getRepository('Geoname');
-	return $geonameRepository->findBy(array(), array("name"=>"asc"));
 }

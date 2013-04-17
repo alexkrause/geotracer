@@ -1,7 +1,8 @@
 <?php
-use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
-require_once "../bootstrap.php";
-require_once "../service/tripService.php";
+// use Doctrine\DBAL\Platforms\Keywords\ReservedKeywordsValidator;
+require_once '../bootstrap.php';
+require_once '../service/tripService.php';
+require_once 'responseClasses.php';
 
 $tripDataJson = $_POST["tripDataJson"];
 
@@ -27,7 +28,3 @@ echo json_encode($responseData);
 
 
 
-class ResponseData {
-	public $status = "ERROR";
-	public $errorcode = "99";
-}

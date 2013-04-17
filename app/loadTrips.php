@@ -1,6 +1,7 @@
 <?php
 require_once '../bootstrap.php';
 require_once '../service/tripService.php';
+require_once 'responseClasses.php';
 
 $tripList = findAllTrips($entityManager);
 $frontendTripList = array();
@@ -12,9 +13,3 @@ foreach ($tripList as $trip) {
 }
 
 echo json_encode($frontendTripList);
-
-
-class TripData {
-	public $id;
-	public $name;
-}

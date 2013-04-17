@@ -23,7 +23,8 @@ $conn = array(
     'user'     => 'root',
     'password' => '',
     'dbname'   => 'geotracer',
-	'host'     => '127.0.0.1'
+	'host'     => '127.0.0.1',
+	'charset' => 'utf8'
 );
 
 // obtaining the entity manager
