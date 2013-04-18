@@ -225,18 +225,6 @@ function startTracing() {
     navigator.geolocation.getCurrentPosition(storeAndShowCurrentPosition,errorRetrievingCurrentPosition);
 }
 
-function resetAll() {
-    localStorage.clear();
-    resetDisplay();
-}
-
-function resetDisplay() {
-    $('#collectedData').find("tr:gt(0)").remove();
-    $('#totaldistance').html('total distance: 0 km');
-    $('#map-canvas').html('');
-    $('#speed').html('Speed: 0 km/h');
-}
-
 function loadPlacesInVicinity() {
     
     var currentPosition = getLastPosition();
@@ -258,7 +246,8 @@ function loadPlacesInVicinity() {
 }
 
 function loadPlacesInVicinitySuccess(data, textStatus, jqXHR) {
-    $('#placesList').html('');
+	showTripDataSection();
+    $('#places').html('Places nearby: ');
     
     var currentLocation = getLastPosition();
     
@@ -267,7 +256,10 @@ function loadPlacesInVicinitySuccess(data, textStatus, jqXHR) {
         if (currentLocation !== null) {
             distance = getDistanceFromLatLonInKm(currentLocation.latitude, currentLocation.longitude, data[i].latitude, data[i].longitude);
         }
-        $('#placesList').append('<li>'+data[i].locationName+': '+distance.toFixed(2)+' km');
+        if (i>0) {
+        	$('#places').append(', ');
+        }
+        $('#places').append(data[i].locationName+': '+distance.toFixed(2)+' km');
     }
 }
 
@@ -351,15 +343,37 @@ function loadTripDataSuccess(data, textStatus, jqXHR) {
     
 }
 
+
+function resetAll() {
+    localStorage.clear();
+    resetDisplay();
+}
+
+function resetDisplay() {
+    $('#collectedData').find("tr:gt(0)").remove();
+    $('#totaldistance').html('total distance: 0 km');
+    $('#map-canvas').html('');
+    $('#speed').html('Speed: 0 km/h');
+    $('#places').html('')
+}
+
 function showTripDataSection(){
-    $('#tripListSection').hide();
+	$('#howtoSection').hide();
+	$('#tripListSection').hide();
     $('#tripDataSection').fadeIn('slow');
     
 } 
 
 function showTripListSection(){
+	$('#howtoSection').hide();
     $('#tripDataSection').hide();
     $('#tripListSection').fadeIn('slow');
+} 
+
+function showHowtoSection(){
+	$('#howtoSection').fadeIn('slow');
+    $('#tripDataSection').hide();
+    $('#tripListSection').hide();
 } 
 
 function determineCurrentPosition() {

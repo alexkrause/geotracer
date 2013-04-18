@@ -346,3 +346,9 @@ input[type=button] {
  .clickableItem {
     cursor:pointer;
  }
+ 
+ .label {
+ 	font-weight: bold;
+ }
+ 
+ 

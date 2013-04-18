@@ -24,14 +24,22 @@
     	<input value="save" type="button" onClick="saveTrip();"/>
     	<input value="load all trips" type="button" onClick="loadTripList();"/>
     	<input value="places" type="button" onClick="loadPlacesInVicinity();"/>
+    	<input value="howto" type="button" onClick="showHowtoSection();"/>
     	
+    	<section id="howtoSection">
+    	<ul>
+    		<li><span class="label">start: </span>start collecting the current position of your device. The collected data is stored locally. The current position is stored only if the distance to the previous position is > 10m. A sample is taken every 5 seconds.
+    		<li><span class="label">stop: </span>stop collecting data. Paint the trip onto a google map
+    		<li><span class="label">save: </span>you can save your trip to my server anonymously. Beware that other people can load and see it
+    		<li><span class="label">load all trips: </span>show a list of saved trips
+    		<li><span class="label">places: </span>show a list of places in your vicinity
+    	</ul>
+    	</section>
 
     	<section id="tripDataSection">   
     	<div id="totaldistance" style="height:50px, width:100%;"></div> 
         <div id="speed" style="height:50px, width:100%;"></div>
         <div id="places" style="height:50px, width:100%;">
-        <ul id="placesList">
-        </ul>
         </div>
     	<table class="datatable" id="collectedData" border="1">
     		<tr>
@@ -48,9 +56,6 @@
     	<ul id="tripList">
     	</ul>
     	</section>
-
-
-    	
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.0.min.js"><\/script>')</script>
