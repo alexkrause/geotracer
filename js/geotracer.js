@@ -245,6 +245,7 @@ function loadPlacesInVicinity() {
     }
 }
 
+
 function loadPlacesInVicinitySuccess(data, textStatus, jqXHR) {
 	showTripDataSection();
     $('#places').html('Places nearby: ');
@@ -261,6 +262,29 @@ function loadPlacesInVicinitySuccess(data, textStatus, jqXHR) {
         }
         $('#places').append(data[i].locationName+': '+distance.toFixed(2)+' km');
     }
+}
+
+function loadWeatherData() {
+    var currentPosition = getLastPosition();
+    
+    if (currentPosition !== null) {
+        
+            $url = "http://api.openweathermap.org/data/2.5/weather?unit=metric&lat="+currentPosition.latitude+"&lon="+currentPosition.longitude;
+            
+            $.ajax({
+              type: "GET",
+              url: $url,
+              success: loadWeatherSuccess,
+              dataType: "json"
+            });
+    }
+}
+
+function loadWeatherSuccess(data, textStatus, jqXHR) {
+    $('#weather').html('');
+    console.log(JSON.stringify(data));
+    
+    $('#weather').append(data.weather[0].description);
 }
 
 function saveTrip() {

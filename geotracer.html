@@ -24,7 +24,9 @@
     	<input value="save" type="button" onClick="saveTrip();"/>
     	<input value="load all trips" type="button" onClick="loadTripList();"/>
     	<input value="places" type="button" onClick="loadPlacesInVicinity();"/>
+    	<input value="weather" type="button" onClick="loadWeatherData();"/>
     	<input value="howto" type="button" onClick="showHowtoSection();"/>
+    	
     	
     	<section id="howtoSection">
     	<ul>
@@ -33,14 +35,16 @@
     		<li><span class="label">save: </span>you can save your trip to my server anonymously. Beware that other people can load and see it
     		<li><span class="label">load all trips: </span>show a list of saved trips
     		<li><span class="label">places: </span>show a list of places in your vicinity
+    		<li><span class="label">weather: </span>show the weather in your vicinity
     	</ul>
     	</section>
 
     	<section id="tripDataSection">   
     	<div id="totaldistance" style="height:50px, width:100%;"></div> 
         <div id="speed" style="height:50px, width:100%;"></div>
-        <div id="places" style="height:50px, width:100%;">
-        </div>
+        <div id="places" style="height:50px, width:100%;"></div>
+        <div id="weather" style="height:50px, width:100%;"></div>
+        
     	<table class="datatable" id="collectedData" border="1">
     		<tr>
     			<th>ts</th>
