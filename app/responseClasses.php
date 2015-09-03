@@ -21,3 +21,7 @@ class ResponseData {
 	public $status = "ERROR";
 	public $errorcode = "99";
 }
+
+class PopulationIndex {
+	public $populationIndex;
+}
