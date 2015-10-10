@@ -25,3 +25,8 @@ class ResponseData {
 class PopulationIndex {
 	public $populationIndex;
 }
+
+class Weather {
+	public $description;
+	public $temperature;
+}
